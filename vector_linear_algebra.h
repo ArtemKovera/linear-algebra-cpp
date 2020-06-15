@@ -39,10 +39,12 @@ namespace LinearAlgebra
         size_t getSize() const;
 
         //overloading [] operator; it's zero based
-        double operator[](size_t);
+        //it throws invalid_argument exception if the argument is greater or equal to the size of the vector
+        double& operator[](size_t);
 
         //read-only variant of [] operator
-        const double operator[](size_t) const;
+        //it throws invalid_argument exception if the argument is greater or equal to the size of the vector       
+        double operator[](size_t) const;
 
         //unary + operator
         Vector operator+() const;
@@ -59,7 +61,6 @@ namespace LinearAlgebra
         //scalar multiplication
         Vector operator*(double) const;
         
-
 
     private:
         size_t size;
