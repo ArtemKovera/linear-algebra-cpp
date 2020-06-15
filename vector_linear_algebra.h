@@ -4,6 +4,7 @@
 #include<vector>
 #include<exception>
 #include<initializer_list>
+#include<utility>
 
 namespace LinearAlgebra
 {
@@ -29,9 +30,11 @@ namespace LinearAlgebra
 
         Vector& operator = (const Vector&) = delete; 
 
-        Vector (Vector&&) = delete;
+        //move constructor
+        Vector (Vector&&) noexcept;
 
-        Vector& operator = (Vector&&) = delete; 
+        //move assignment operator
+        Vector& operator = (Vector&&) noexcept; 
 
         virtual ~Vector();
 
@@ -69,6 +72,9 @@ namespace LinearAlgebra
 
         //helper method for freeing memory
         void clean() noexcept;
+
+        //helper function used in move constructor and assignment operator
+        void moveFrom(Vector&) noexcept;
     };
 
 }
