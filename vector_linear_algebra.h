@@ -1,6 +1,10 @@
 #ifndef _VECTOR_LINEAR_ALGEBRA_H_
 #define _VECTOR_LINEAR_ALGEBRA_H_
 
+#include<vector>
+#include<exception>
+#include<initializer_list>
+
 namespace LinearAlgebra
 {
 
@@ -8,6 +12,7 @@ namespace LinearAlgebra
     {
     public:
         //default constructor creates a vector with default size
+        //vector elements are zero initialized        
         Vector();
         
         //this constructor creates a vector whose size equals to the argument
@@ -15,9 +20,20 @@ namespace LinearAlgebra
         Vector(size_t);
 
         //this constructor creates a vector whose size and values are equal to the ones of the stl vector taken as the argument
-        Vector(std::vector<double>);
+        Vector(std::vector<double>&);
 
-        ~Vector();
+        //initializer-list constructor
+        Vector(std::initializer_list<double>);
+
+        Vector (const Vector&) = delete; 
+
+        Vector& operator = (const Vector&) = delete; 
+
+        Vector (Vector&&) = delete;
+
+        Vector& operator = (Vector&&) = delete; 
+
+        virtual ~Vector();
 
         //this method returns the size of the vector
         size_t getSize() const;
@@ -49,6 +65,9 @@ namespace LinearAlgebra
         size_t size;
         double* pointer = nullptr;
         static const size_t defaultSize = 10;
+
+        //helper method for freeing memory
+        void clean() noexcept;
     };
 
 }
