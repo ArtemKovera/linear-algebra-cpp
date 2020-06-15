@@ -31,6 +31,22 @@ Vector::Vector(std::initializer_list<double> args): size{args.size()}, pointer{n
     }
 }
 
+Vector::Vector(Vector&& src) noexcept
+{
+    moveFrom(src);
+}
+
+Vector& Vector::operator= (Vector&& src) noexcept
+{
+    if(this == &src)
+        return *this;
+    
+    clean();
+    moveFrom(src);
+    
+    return *this;
+}
+
 Vector::~Vector()
 {
     clean();
@@ -60,9 +76,18 @@ double Vector::operator[] (size_t index) const
     if(index >= size)
         throw::std::invalid_argument("Invalid index");
     
-    std::cout << "const operator [] overloading " << std::endl;
     return *(pointer + index);    
 }
+
+void Vector::moveFrom (Vector& src) noexcept
+{
+    size = src.size;
+    pointer = src.pointer;
+
+    src.size = 0;
+    src.pointer = nullptr;
+}
+
 
 
 
