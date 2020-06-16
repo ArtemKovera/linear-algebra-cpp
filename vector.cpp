@@ -2,6 +2,8 @@
        
         implementation of LinearAlgebra::Vector
 
+        it should be compiled using C++17 standard or higher
+
 */
 
 #include<iostream>
@@ -36,7 +38,7 @@ Vector::Vector(Vector&& src) noexcept
     moveFrom(src);
 }
 
-Vector& Vector::operator= (Vector&& src) noexcept
+Vector& Vector::operator=(Vector&& src) noexcept
 {
     if(this == &src)
         return *this;
@@ -115,7 +117,77 @@ void Vector::swap(Vector& first, Vector& second) noexcept
     swap(first.pointer, second.pointer);
 }
 
+Vector Vector::operator*(double scalar) const
+{
+    Vector vec(size);
 
+    for(size_t i = 0; i<size; i++)
+    {
+        vec[i] = pointer[i] * scalar;
+    }
+
+    return vec;
+}
+
+bool Vector::operator==(const Vector& other) const
+{
+    if(size != other.size)
+        return false;
+
+    for(size_t i = 0; i < size; i++)
+    {
+        if(fabs(pointer[i] - other.pointer[i]) > epsilon)
+            return false;
+    }
+
+    return true;
+}
+
+Vector Vector::operator+() const
+{
+    Vector vec(size);
+    for (size_t i=0; i<size; i++)
+    {
+        vec[i] = pointer[i];
+    }
+    return vec;
+}
+
+Vector Vector::operator-() const
+{
+    Vector vec(size);
+    for (size_t i=0; i<size; i++)
+    {
+        vec[i] = -pointer[i];
+    }
+    return vec;    
+}
+
+Vector Vector::operator+(const Vector& other) const
+{
+    if(size != other.size)
+        throw std::invalid_argument("The sizes of the vectors must be the same");
+
+    Vector vec(size);
+    for (size_t i=0; i<size; i++)
+    {
+        vec[i] = pointer[i] + other.pointer[i];
+    }
+    return vec;        
+}
+
+Vector Vector::operator-(const Vector& other) const
+{
+    if(size != other.size)
+        throw std::invalid_argument("The sizes of the vectors must be the same");
+
+    Vector vec(size);
+    for (size_t i=0; i<size; i++)
+    {
+        vec[i] = pointer[i] - other.pointer[i];
+    }
+    return vec;        
+}
 
 
 
