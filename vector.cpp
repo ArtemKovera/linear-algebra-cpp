@@ -47,6 +47,26 @@ Vector& Vector::operator= (Vector&& src) noexcept
     return *this;
 }
 
+Vector::Vector(const Vector& src)
+{
+    size = src.size;
+    pointer = new double [size];
+
+    for(size_t i = 0; i < size; i++)
+        pointer[i] = src.pointer[i];
+}
+
+Vector& Vector::operator=(const Vector& src)
+{
+    if(this == &src)
+        return *this;
+
+    Vector tmp(src);
+    swap(*this, tmp);
+
+    return *this;
+}
+
 Vector::~Vector()
 {
     clean();
@@ -79,13 +99,20 @@ double Vector::operator[] (size_t index) const
     return *(pointer + index);    
 }
 
-void Vector::moveFrom (Vector& src) noexcept
+void Vector::moveFrom(Vector& src) noexcept
 {
     size = src.size;
     pointer = src.pointer;
 
     src.size = 0;
     src.pointer = nullptr;
+}
+
+void Vector::swap(Vector& first, Vector& second) noexcept
+{
+    using std::swap;
+    swap(first.size, second.size);
+    swap(first.pointer, second.pointer);
 }
 
 
