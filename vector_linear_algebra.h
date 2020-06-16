@@ -5,6 +5,7 @@
 #include<exception>
 #include<initializer_list>
 #include<utility>
+#include<cmath>
 
 namespace LinearAlgebra
 {
@@ -59,11 +60,11 @@ namespace LinearAlgebra
         //returns copy of the vector with inverse sign of the elements 
         Vector operator-() const;
 
-        // binary + operator
+        //binary + operator
         //throws invalid_argument exception if the vector taken as the argument has different size
         Vector operator+(const Vector&) const;
         
-        // binary - operator
+        //binary - operator
         //throws invalid_argument exception if the vector taken as the argument has different size
         Vector operator-(const Vector&) const; 
 
@@ -72,12 +73,21 @@ namespace LinearAlgebra
         
         //returns true if both vectors have equal number of elements and the elements of one vector
         //are equal to the corresponding elements of the other vector
+        //doing comparising of the elements, method uses the fabs function from cmath header
         bool operator==(const Vector&) const;
 
     private:
+        //size of the vector
         size_t size;
+
+        //pointer pointing to the vector elements
         double* pointer = nullptr;
+
+        //size of the vector used in the default constructor
         static const size_t defaultSize = 10;
+
+        //epsilon used for vector element comparising
+        static inline const float epsilon = 0.00001;
 
         //helper method for freeing memory
         void clean() noexcept;
