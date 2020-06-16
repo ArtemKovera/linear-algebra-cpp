@@ -26,9 +26,11 @@ namespace LinearAlgebra
         //initializer-list constructor
         Vector(std::initializer_list<double>);
 
-        Vector (const Vector&) = delete; 
+        //copy constructor
+        Vector (const Vector&); 
 
-        Vector& operator = (const Vector&) = delete; 
+        //exception-safe copy assignment operator
+        Vector& operator = (const Vector&); 
 
         //move constructor
         Vector (Vector&&) noexcept;
@@ -50,20 +52,27 @@ namespace LinearAlgebra
         double operator[](size_t) const;
 
         //unary + operator
+        //just returns the exact copy of the vector 
         Vector operator+() const;
 
         //unary - operator
+        //returns copy of the vector with inverse sign of the elements 
         Vector operator-() const;
 
         // binary + operator
+        //throws invalid_argument exception if the vector taken as the argument has different size
         Vector operator+(const Vector&) const;
         
         // binary - operator
+        //throws invalid_argument exception if the vector taken as the argument has different size
         Vector operator-(const Vector&) const; 
 
         //scalar multiplication
         Vector operator*(double) const;
         
+        //returns true if both vectors have equal number of elements and the elements of one vector
+        //are equal to the corresponding elements of the other vector
+        bool operator==(const Vector&) const;
 
     private:
         size_t size;
@@ -73,10 +82,12 @@ namespace LinearAlgebra
         //helper method for freeing memory
         void clean() noexcept;
 
-        //helper function used in move constructor and assignment operator
+        //helper method used in move constructor and assignment operator
         void moveFrom(Vector&) noexcept;
-    };
 
+        //helper method used in copy assignment operator
+        void swap(Vector&, Vector&) noexcept;
+    };
 }
 
 
