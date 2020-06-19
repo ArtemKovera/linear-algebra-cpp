@@ -33,6 +33,22 @@ Matrix::Matrix(size_t row, size_t col, double value): Matrix(row, col)
     }
 }
 
+Matrix::Matrix(Matrix&& src) noexcept
+{
+    moveFrom(src);
+}
+
+Matrix& Matrix::operator=(Matrix&& src) noexcept
+{
+    if(this == &src)
+        return *this;
+
+    clean();
+    moveFrom(src);
+
+    return *this;
+}
+
 Matrix::~Matrix()
 {
     clean();
@@ -116,7 +132,7 @@ size_t Matrix::getNumberOfElements() const
     return rows * columns;
 }
 
-void Matrix::clean()
+void Matrix::clean() noexcept
 {
     for(size_t i = 0; i < rows; i++)
     {
@@ -124,6 +140,17 @@ void Matrix::clean()
     }
     delete [] pointer;
     pointer = nullptr;     
+}
+
+void Matrix::moveFrom(Matrix& src) noexcept
+{
+    rows = src.rows;
+    columns = src.columns;
+    pointer = src.pointer;
+
+    src.rows = 0;
+    src.columns = 0;
+    src.pointer = nullptr;
 }
 
 
