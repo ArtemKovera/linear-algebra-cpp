@@ -24,6 +24,12 @@ namespace LinearAlgebra
         //the first two arguments must be greater than 0        
         Matrix(size_t, size_t, double);
 
+        //copy constructor
+        Matrix(const Matrix&);
+
+        //exception-safe assignment operator
+        Matrix& operator=(const Matrix&);
+        
         //move constructor
         Matrix(Matrix&&) noexcept;
 
@@ -86,7 +92,7 @@ namespace LinearAlgebra
         //pointer pointing to double array for matrix
         double** pointer = nullptr; 
 
-        //epsilon used for vector element comparising
+        //epsilon used for matrix element comparising
         static inline const float epsilon = 0.00001;               
         
         //halper method for freeing memory
@@ -94,6 +100,9 @@ namespace LinearAlgebra
 
         //helper method used in move constructor and copy assignment operator
         void moveFrom(Matrix&) noexcept;
+
+        //helper method used in copy assignment operator
+        void swap(Matrix&, Matrix&) noexcept;
     };
 }
 
