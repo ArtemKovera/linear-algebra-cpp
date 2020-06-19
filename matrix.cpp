@@ -33,6 +33,22 @@ Matrix::Matrix(size_t row, size_t col, double value): Matrix(row, col)
     }
 }
 
+Matrix::Matrix(const Matrix& src): rows{src.rows}, columns{src.columns}, pointer{new double* [src.rows]}
+{
+    for(size_t i = 0; i < rows; i++)
+    {
+        pointer[i] = new double [columns] {};
+    }    
+
+    for(size_t i = 0; i < rows; i++)
+    {
+        for(size_t j = 0; j < columns; j++)
+        {
+            pointer[i][j] = src.pointer[i][j];
+        }
+    }
+}
+
 Matrix::Matrix(Matrix&& src) noexcept
 {
     moveFrom(src);
@@ -45,6 +61,17 @@ Matrix& Matrix::operator=(Matrix&& src) noexcept
 
     clean();
     moveFrom(src);
+
+    return *this;
+}
+
+Matrix& Matrix::operator=(const Matrix& src)
+{
+    if(this == &src)
+        return *this;
+    
+    Matrix tmp(src);
+    swap(*this, tmp);
 
     return *this;
 }
@@ -152,5 +179,17 @@ void Matrix::moveFrom(Matrix& src) noexcept
     src.columns = 0;
     src.pointer = nullptr;
 }
+
+void Matrix::swap(Matrix& first, Matrix& second) noexcept
+{
+    using std::swap;
+    swap(first.rows, second.rows);
+    swap(first.columns, second.columns);
+    swap(first.pointer, second.pointer);
+}
+
+
+
+
 
 
