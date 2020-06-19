@@ -24,6 +24,12 @@ namespace LinearAlgebra
         //the first two arguments must be greater than 0        
         Matrix(size_t, size_t, double);
 
+        //move constructor
+        Matrix(Matrix&&) noexcept;
+
+        //move assignment operator
+        Matrix& operator=(Matrix&&) noexcept;
+
         virtual ~Matrix();
 
         //this method returns the dimention of the matrix
@@ -84,7 +90,10 @@ namespace LinearAlgebra
         static inline const float epsilon = 0.00001;               
         
         //halper method for freeing memory
-        void clean();
+        void clean() noexcept;
+
+        //helper method used in move constructor and copy assignment operator
+        void moveFrom(Matrix&) noexcept;
     };
 }
 
