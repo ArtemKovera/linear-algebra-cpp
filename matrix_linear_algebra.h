@@ -47,6 +47,10 @@ namespace LinearAlgebra
         //it throws std::invalid_argument exception if one or first two arguments have inappropriate values
         void setElement(size_t, size_t, double);
 
+        //first argument - row index, second argumend - column index
+        //it throws std::invalid_argument exception if one or both arguments have inappropriate values       
+        double& setElement(size_t, size_t);
+
         //this method returns the value of the matrix element
         //first argument - row index, second argumend - column index        
         //it throws std::invalid_argument exception if one or both the arguments have inappropriate values
