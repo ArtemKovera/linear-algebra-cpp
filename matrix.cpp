@@ -240,7 +240,7 @@ bool Matrix::operator==(const Matrix& other) const
             el1 = getElement(i, j);
             el2 = other.getElement(i, j);
 
-            if(el1 != el2)
+            if(fabs(el1 - el2) > epsilon)
                 return false;
         }
     } 
