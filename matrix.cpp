@@ -89,6 +89,14 @@ void Matrix::setElement(size_t row, size_t col, double value)
     pointer[row][col] = value;
 }
 
+double& Matrix::setElement(size_t row, size_t col)
+{
+    if(row >= rows || col >=columns)
+        throw std::invalid_argument("");  
+
+    return pointer[row][col];  
+}
+
 double Matrix::getElement(size_t row, size_t col) const
 {
     if(row >= rows || col >=columns)
@@ -186,6 +194,94 @@ void Matrix::swap(Matrix& first, Matrix& second) noexcept
     swap(first.rows, second.rows);
     swap(first.columns, second.columns);
     swap(first.pointer, second.pointer);
+}
+
+Matrix Matrix::operator-() const
+{
+    Matrix tmp(rows, columns);
+
+    for(size_t i = 0; i < rows; i++)
+    {
+        for(size_t j = 0; j < columns; j++)
+        {
+            tmp.setElement(i, j, -getElement(i, j));
+        }
+    }  
+
+    return tmp;  
+}
+
+Matrix Matrix::operator*(double scl) const
+{
+    Matrix tmp(rows, columns);
+    double el;
+    for(size_t i = 0; i < rows; i++)
+    {
+        for(size_t j = 0; j < columns; j++)
+        {
+            el = getElement(i, j) * scl;
+            tmp.setElement(i, j, el);
+        }
+    } 
+
+    return tmp;     
+}
+
+bool Matrix::operator==(const Matrix& other) const
+{
+    if(getNumberOfElements() != other.getNumberOfElements())
+        return false;  
+    
+    double el1, el2;
+    for(size_t i = 0; i < rows; i++)
+    {
+        for(size_t j = 0; j < columns; j++)
+        {
+            el1 = getElement(i, j);
+            el2 = other.getElement(i, j);
+
+            if(el1 != el2)
+                return false;
+        }
+    } 
+
+    return true;  
+}
+
+Matrix Matrix::operator+(const Matrix& other) const
+{
+    if(getNumberOfElements() != other.getNumberOfElements())
+        throw std::invalid_argument("The matricies should be of the same size");
+
+    Matrix tmp(*this);
+    
+    for(size_t i = 0; i < rows; i++)
+    {
+        for(size_t j = 0; j < columns; j++)
+        {
+            tmp.setElement(i, j) += other.getElement(i, j);
+        }
+    } 
+    
+    return tmp;  
+}
+
+Matrix Matrix::operator-(const Matrix& other) const
+{
+    if(getNumberOfElements() != other.getNumberOfElements())
+        throw std::invalid_argument("The matricies should be of the same size");
+
+    Matrix tmp(*this);
+    
+    for(size_t i = 0; i < rows; i++)
+    {
+        for(size_t j = 0; j < columns; j++)
+        {
+            tmp.setElement(i, j) -= other.getElement(i, j);
+        }
+    } 
+    
+    return tmp;  
 }
 
 
